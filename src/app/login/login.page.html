@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-weight: bold;">LOGIN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label position="floating">EMAIL</ion-label>
+    <ion-input [(ngModel)]="email" placeholder="(email)"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">PASSWORD</ion-label>
+    <ion-input [(ngModel)]="password" placeholder="(password)"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="login()">LOGIN</ion-button>
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title style="font-weight: bold;">REGISTRO</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-item>
+    <ion-label position="floating">NOMBRE</ion-label>
+    <ion-input [(ngModel)]="usuario_registro" placeholder="(nombre)"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">EMAIL</ion-label>
+    <ion-input [(ngModel)]="email_registro" placeholder="(email)"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">PASSWORD</ion-label>
+    <ion-input [(ngModel)]="password_registro" placeholder="(password)"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="registrar()">REGISTRAR</ion-button>
+
+</ion-content>

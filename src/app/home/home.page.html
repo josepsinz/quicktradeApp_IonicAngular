@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-item lines="none">
+
+      <ion-title style="font-weight: bold; font-size: x-large;">QUICKTRADE App</ion-title>
+      <ion-button fill="clear" routerLink='/login' routerDirection="forward">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" style="text-align: right;">
+    <ion-label style="color: red; font-weight: bolder; font-size: x-large;">{{nombre_usuario}}</ion-label>
+  </ion-item>
+  <ion-img style="height: 200px;" src="../assets/fotos/logoq.png"></ion-img>
+  <ion-text><br><i>Compra venta de artículos de segunda mano</i><br><br><br>Elige una opción:</ion-text>
+  <ion-button expand="full" [routerLink]="['/listado', id_usuario]">Listado</ion-button>
+  <ion-button expand="full" [routerLink]="['/insertar', id_usuario]">Insertar producto</ion-button>
+  <ion-button expand="full" [routerLink]="['/misproductos', id_usuario]">Mis productos</ion-button>
+  <!--AÑADIMOS BOTON BUSCAR-->
+  <ion-button expand="full" [routerLink]="['/buscar', id_usuario]">Buscar</ion-button>
+</ion-content>

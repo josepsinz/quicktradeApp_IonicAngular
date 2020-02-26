@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Buscar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  
+
+  <ion-item>
+    <ion-label>Texto a buscar:</ion-label>
+    <ion-input [(ngModel)]="filterText"></ion-input>
+  </ion-item>
+  <ion-button (click)=buscar(filterText)>BUSCAR</ion-button>
+  <ion-button (click)=all()>TODOS</ion-button>
+
+  <div *ngFor="let item of articulos">
+    <ion-card button=true (click)="verDetalles(item.clave)" style="background-color: #f4f5f8;">
+      <ion-card-header>
+        <ion-card-title>{{item.titulo}} ({{item.precio}}€)</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-label>{{item.descripcion}}</ion-label>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="item.foto[0]"></ion-img>
+        </ion-thumbnail>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+</ion-content>

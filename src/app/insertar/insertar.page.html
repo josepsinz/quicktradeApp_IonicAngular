@@ -1,0 +1,409 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill="clear" [routerLink]="['/home', id_usuario]" routerDirection="forward">
+      <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      <ion-item style="align-items: center">
+        <ion-title style="align-items: center; font-weight: bold">{{nombre_usuario}} (Añadir producto)</ion-title>
+      </ion-item>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-header>
+      <ion-segment scrollable>
+        <ion-segment-button *ngFor="let category of categorias; let ind = index" (click)="selectCategoria(ind)">
+          <ion-icon [name]="category.icon"></ion-icon>
+          <ion-label [class.select]="category.select === true">
+            {{ category.name }}
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-header>
+  </ion-list>
+  <!----------------------------------------------------------->
+  <div *ngIf="categoria == null">Seleccione una categoría, gracias</div>
+  <!----------------------------------------------------------->
+  <!-----------------------MOTOR------------------------------------>
+  <!----------------------------------------------------------->
+
+  <div *ngIf="categoria == 0">
+    <form (ngSubmit)="insert(categoria)">
+      <ion-list>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Título*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.titulo" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.titulo">
+          <ng-container *ngIf="titulo.hasError(error.type) && (titulo.dirty || titulo.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Descripción:</ion-label>
+          <ion-textarea [formControl]="generalForm.controls.descripcion" inputmode="text"></ion-textarea>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.descripcion">
+          <ng-container *ngIf="descripcion.hasError(error.type) && (descripcion.dirty || descripcion.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item lines="full">
+          <ion-label class=labelItem>Tipología:</ion-label>
+          <ion-radio-group [formControl]="motorForm.controls.tipologia" checked>
+            <ion-item lines="none">
+              <ion-label>Coche</ion-label>
+              <ion-radio slot="start" value="Coche" checked>Coche</ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>Motocicleta</ion-label>
+              <ion-radio slot="start" value="Motocicleta">Moto</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Kilometraje:</ion-label>
+          <ion-input [formControl]="motorForm.controls.kilometraje" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.enteroPositivo">
+          <ng-container *ngIf="kilometraje.hasError(error.type) && (kilometraje.dirty || kilometraje.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Año:</ion-label>
+          <ion-datetime [formControl]="motorForm.controls.anyo" displayFormat="YYYY" min="1981" max="2020">
+          </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Precio*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.precio" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.precio">
+          <ng-container *ngIf="precio.hasError(error.type) && (precio.dirty || precio.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Foto/s:</ion-label>
+          <ion-input type="file" accept=".png, .jpg" (change)="uploadPhoto($event)"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button type="submit" expand="full">Añadir artículo</ion-button>
+    </form><br>
+    <!----------------------------------------------------------->
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title style="font-weight: bold">
+          Listado actual Motor:
+        </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <div *ngFor="let item of articulos">
+      <ion-card *ngIf="item.categoria==0" style="background-color: #f4f5f8;">
+        <ion-card-header>
+          <ion-card-title>{{item.titulo}} ({{item.precio}}€)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>{{item.descripcion}}</ion-label>
+        </ion-card-content>
+        <ion-icon button=true [name]="item.show ? 'remove' :'add'" (click)="show(item.id)"></ion-icon>
+        <ion-card-content *ngIf="item.show==true">
+          <ion-label>Tipología: {{item.tipologia}}</ion-label><br>
+          <ion-label>Kilometraje: {{item.kilometraje}}</ion-label><br>
+          <ion-label>Año: {{item.anyo}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <!----------------------------------------------------------->
+  <!---------------------INMOBILIARIA-------------------------------------->
+  <!----------------------------------------------------------->
+  <div *ngIf="categoria == 1">
+    <form (ngSubmit)="insert(categoria)">
+      <ion-list>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Título*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.titulo" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.titulo">
+          <ng-container *ngIf="titulo.hasError(error.type) && (titulo.dirty || titulo.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Descripción:</ion-label>
+          <ion-textarea [formControl]="generalForm.controls.descripcion" inputmode="text"></ion-textarea>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.descripcion">
+          <ng-container *ngIf="descripcion.hasError(error.type) && (descripcion.dirty || descripcion.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Metros cuadrados:</ion-label>
+          <ion-input [formControl]="inmobiliariaForm.controls.metros" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.enteroPositivo">
+          <ng-container *ngIf="metros.hasError(error.type) && (metros.dirty || metros.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Habitaciones:</ion-label>
+          <ion-input [formControl]="inmobiliariaForm.controls.habitaciones" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.enteroPositivo">
+          <ng-container *ngIf="habitaciones.hasError(error.type) && (habitaciones.dirty || habitaciones.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Localidad:</ion-label>
+          <ion-textarea [formControl]="inmobiliariaForm.controls.localidad" inputmode="text"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Precio*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.precio" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.precio">
+          <ng-container *ngIf="precio.hasError(error.type) && (precio.dirty || precio.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Foto/s:</ion-label>
+          <ion-input type="file" accept=".png, .jpg" (change)="uploadPhoto($event)"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button type="submit" expand="full">Añadir artículo</ion-button>
+    </form><br>
+    <!----------------------------------------------------------->
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title style="font-weight: bold">
+          Listado actual Inmobiliaria:
+        </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <div *ngFor="let item of articulos">
+      <ion-card *ngIf="item.categoria==1" style="background-color: #f4f5f8;">
+        <ion-card-header>
+          <ion-card-title>{{item.titulo}} ({{item.precio}}€)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>{{item.descripcion}}</ion-label>
+        </ion-card-content>
+        <ion-icon button=true [name]="item.show ? 'remove' :'add'" (click)="show(item.id)"></ion-icon>
+        <ion-card-content *ngIf="item.show==true">
+          <ion-label>Metros cuadrados: {{item.metros}}</ion-label><br>
+          <ion-label>Habitaciones: {{item.habitaciones}}</ion-label><br>
+          <ion-label>Localidad: {{item.localidad}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <!----------------------------------------------------------->
+  <!------------------------TECNOLOGIA----------------------------------->
+  <!----------------------------------------------------------->
+  <div *ngIf="categoria == 2">
+    <form (ngSubmit)="insert(categoria)">
+      <ion-list>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Título*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.titulo" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.titulo">
+          <ng-container *ngIf="titulo.hasError(error.type) && (titulo.dirty || titulo.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Descripción:</ion-label>
+          <ion-textarea [formControl]="generalForm.controls.descripcion" inputmode="text"></ion-textarea>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.descripcion">
+          <ng-container *ngIf="descripcion.hasError(error.type) && (descripcion.dirty || descripcion.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item lines="full">
+          <ion-label class=labelItem>Estado:</ion-label>
+          <ion-radio-group [formControl]="tecnologiaForm.controls.estado">
+            <ion-item lines="none">
+              <ion-label>Perfecto estado</ion-label>
+              <ion-radio slot="start" value="Perfecto estado">Perfecto estado</ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>Usado</ion-label>
+              <ion-radio slot="start" value="Usado">Usado</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Precio*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.precio" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.precio">
+          <ng-container *ngIf="precio.hasError(error.type) && (precio.dirty || precio.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Foto/s:</ion-label>
+          <ion-input type="file" accept=".png, .jpg" (change)="uploadPhoto($event)"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button type="submit" expand="full">Añadir artículo</ion-button>
+    </form><br>
+    <!----------------------------------------------------------->
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title style="font-weight: bold">
+          Listado actual Tecnología:
+        </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <div *ngFor="let item of articulos">
+      <ion-card *ngIf="item.categoria==2" style="background-color: #f4f5f8;">
+        <ion-card-header>
+          <ion-card-title>{{item.titulo}} ({{item.precio}}€)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>{{item.descripcion}}</ion-label>
+        </ion-card-content>
+        <ion-icon button=true [name]="item.show ? 'remove' :'add'" (click)="show(item.id)"></ion-icon>
+        <ion-card-content *ngIf="item.show==true">
+          <ion-label>Estado: {{item.estado}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <!----------------------------------------------------------->
+  <!---------------------HOGAR-------------------------------------->
+  <!----------------------------------------------------------->
+  <div *ngIf="categoria == 3">
+    <form (ngSubmit)="insert(categoria)">
+      <ion-list>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Título*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.titulo" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.titulo">
+          <ng-container *ngIf="titulo.hasError(error.type) && (titulo.dirty || titulo.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Descripción:</ion-label>
+          <ion-textarea [formControl]="generalForm.controls.descripcion" inputmode="text"></ion-textarea>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.descripcion">
+          <ng-container *ngIf="descripcion.hasError(error.type) && (descripcion.dirty || descripcion.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Precio*:</ion-label>
+          <ion-input [formControl]="generalForm.controls.precio" inputmode="text"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of errorMessages.precio">
+          <ng-container *ngIf="precio.hasError(error.type) && (precio.dirty || precio.touched)">
+            <small class="error-message">
+              <ion-icon name="alert"></ion-icon>{{error.message}}
+            </small>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-label class=labelItem position="floating">Foto/s:</ion-label>
+          <ion-input type="file" accept=".png, .jpg" (change)="uploadPhoto($event)"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button type="submit" expand="full">Añadir artículo</ion-button>
+    </form><br>
+    <!------------------------------------------------->
+    <ion-footer style="border-width: thick;">
+      <ion-toolbar>
+        <ion-title style="text-decoration: underline; font-weight: bold">
+          Listado actual Hogar:
+        </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <div *ngFor="let item of articulos">
+      <ion-card *ngIf="item.categoria==3" style="background-color: #f4f5f8;">
+        <ion-card-header>
+          <ion-card-title>{{item.titulo}} ({{item.precio}}€)</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>{{item.descripcion}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+</ion-content>
